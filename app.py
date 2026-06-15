@@ -27,17 +27,17 @@ def save_chat_history(messages):
 # Load environment variables (override to ensure new keys are picked up without restarting)
 load_dotenv(override=True)
 
-# 1. Debug check to see exactly what Streamlit sees
-st.write("### 🔍 Debugging API Key Connection")
-
+# Look EXACTLY for what is saved in your Streamlit Secrets dashboard
 api_key = st.secrets.get("GOOGLE_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
     st.error("❌ Gemini API Key not found! Please check your settings.")
     st.stop()
 
-# Force map the key strictly for the Gemini API environments
+# Force-feed the key into the environment variables LlamaIndex demands
 os.environ["GEMINI_API_KEY"] = api_key
+os.environ["GOOGLE_API_KEY"] = api_key
+
 
 # --- Page Config & Styling ---
 st.set_page_config(page_title="FeePal Chatbot", page_icon="💬", layout="centered")
