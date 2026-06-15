@@ -27,13 +27,29 @@ def save_chat_history(messages):
 # Load environment variables (override to ensure new keys are picked up without restarting)
 load_dotenv(override=True)
 
-if "GEMINI_API_KEY" in os.environ:
-    os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
+# 1. Debug check to see exactly what Streamlit sees
+st.write("### 🔍 Debugging API Key Connection")
 
-api_key = st.secrets.get("GOOGLE_API_KEY") or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+# Check what is inside st.secrets
+if "GOOGLE_API_KEY" in st.secrets:
+    raw_key = st.secrets["GOOGLE_API_KEY"]
+    # Mask it so it's safe to view on screen (e.g., AIzaSy...vW2Rg)
+    masked_key = f"{raw_key[:6]}...{raw_key[-5:]}" if len(raw_key) > 10 else "Key too short"
+    st.success(f"✅ Found GOOGLE_API_KEY in st.secrets! (Masked: {masked_key})")
+else:
+    st.error("❌ GOOGLE_API_KEY was NOT found in st.secrets.")
 
-if not api_key:
-    st.error("Google API Key not found! Please check your .env file.")
+if "GEMINI_API_KEY" in st.secrets:
+    st.warning("⚠️ Found GEMINI_API_KEY instead of GOOGLE_API_KEY in st.secrets.")
+
+# 2. Force assign it to what your underlying libraries expect
+api_key = st.secrets.get("GOOGLE_API_KEY")
+
+if api_key:
+    os.environ["GOOGLE_API_KEY"] = api_key
+    os.environ["GEMINI_API_KEY"] = api_key
+else:
+    st.error("Stopping execution: No valid key assigned.")
     st.stop()
 
 genai.configure(api_key=api_key)
