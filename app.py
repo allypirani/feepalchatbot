@@ -34,9 +34,16 @@ if not api_key:
     st.error("❌ Gemini API Key not found! Please check your settings.")
     st.stop()
 
+# Clean the API key to remove any accidental quotes, spaces, or newlines
+# This is a common issue when pasting into the Streamlit Secrets dashboard
+api_key = api_key.strip(' "\'\n\r')
+
 # Force-feed the key into the environment variables LlamaIndex demands
 os.environ["GEMINI_API_KEY"] = api_key
 os.environ["GOOGLE_API_KEY"] = api_key
+
+# Explicitly configure the underlying genai library
+genai.configure(api_key=api_key)
 
 
 # --- Page Config & Styling ---
