@@ -16,3 +16,4 @@ llama-index-vector-stores-chroma
 
 # Environment Variables
 python-dotenv
+Pillow>=10.0.0
