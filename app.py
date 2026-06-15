@@ -30,22 +30,17 @@ load_dotenv(override=True)
 # 1. Debug check to see exactly what Streamlit sees
 st.write("### 🔍 Debugging API Key Connection")
 
-# 1. Fetch the key from Streamlit Secrets or local .env
 api_key = st.secrets.get("GOOGLE_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
-    st.error("❌ API Key not found in Streamlit Secrets or .env file!")
+    st.error("❌ Gemini API Key not found! Please check your settings.")
     st.stop()
 
-# 2. FORCE inject the key into BOTH environment variables that libraries look for
-os.environ["GOOGLE_API_KEY"] = api_key
+# Force map the key strictly for the Gemini API environments
 os.environ["GEMINI_API_KEY"] = api_key
 
-# 3. Configure the Google GenAI SDK directly
-genai.configure(api_key=api_key)
-
 # --- Page Config & Styling ---
-st.set_page_config(page_title="FeePal Chatbot", page_icon="💡", layout="centered")
+st.set_page_config(page_title="FeePal Chatbot", page_icon="💬", layout="centered")
 
 # Custom CSS for White, Blue, Teal scheme
 st.markdown("""
