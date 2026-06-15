@@ -3,9 +3,11 @@ uvicorn
 llama-index
 llama-index-llms-gemini
 llama-index-embeddings-gemini
+llama-index-embeddings-huggingface
 llama-index-vector-stores-chroma
 chromadb
 pydantic
 python-multipart
 python-dotenv
 pypdf
+google-generativeai
