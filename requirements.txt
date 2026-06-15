@@ -1,0 +1,18 @@
+# Streamlit & UI
+streamlit
+
+# LlamaIndex Core & RAG
+llama-index
+pypdf
+
+# Models & Embeddings
+llama-index-llms-gemini
+google-generativeai
+llama-index-embeddings-huggingface
+
+# Vector Database
+chromadb
+llama-index-vector-stores-chroma
+
+# Environment Variables
+python-dotenv
